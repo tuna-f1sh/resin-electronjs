@@ -18,5 +18,5 @@ if [ ! -c /dev/fb1 ] && [ "$TFT" = "1" ]; then
   mknod /dev/fb1 c $(cat /sys/class/graphics/fb1/dev | tr ':' ' ') || true
   FRAMEBUFFER=/dev/fb1 startx /usr/src/app/node_modules/electron/dist/electron /usr/src/app --enable-logging
 else
-  startx /usr/src/app/node_modules/electron/dist/electron /usr/src/app --enable-logging
+  DBUS_SYSTEM_BUS_ADDRESS=unix:path=/host/run/dbus/system_bus_socket startx /usr/src/app/node_modules/electron/dist/electron /usr/src/app --enable-logging
 fi
