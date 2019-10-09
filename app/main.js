@@ -3,6 +3,7 @@ const path = require('path');
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
+let loadingWindow;
 
 const {
   app,
@@ -16,9 +17,10 @@ const electronConfig = {
   URL_LAUNCHER_FRAME: process.env.URL_LAUNCHER_FRAME === '1' ? 1 : 0,
   URL_LAUNCHER_KIOSK: process.env.URL_LAUNCHER_KIOSK === '1' ? 1 : 0,
   URL_LAUNCHER_NODE: process.env.URL_LAUNCHER_NODE === '1' ? 1 : 0,
-  URL_LAUNCHER_WIDTH: parseInt(process.env.URL_LAUNCHER_WIDTH || 1920, 10),
-  URL_LAUNCHER_HEIGHT: parseInt(process.env.URL_LAUNCHER_HEIGHT || 1080, 10),
+  URL_LAUNCHER_WIDTH: parseInt(process.env.URL_LAUNCHER_WIDTH || 480, 10),
+  URL_LAUNCHER_HEIGHT: parseInt(process.env.URL_LAUNCHER_HEIGHT || 800, 10),
   URL_LAUNCHER_TITLE: process.env.URL_LAUNCHER_TITLE || 'BALENA.IO',
+  URL_LAUNCHER_COLOR: process.env.URL_LAUNCHER_COLOR || '#000000',
   URL_LAUNCHER_CONSOLE: process.env.URL_LAUNCHER_CONSOLE === '1' ? 1 : 0,
   URL_LAUNCHER_URL: process.env.URL_LAUNCHER_URL || `file:///${path.join(__dirname, 'data', 'index.html')}`,
   URL_LAUNCHER_ZOOM: parseFloat(process.env.URL_LAUNCHER_ZOOM || 1.0),
@@ -105,6 +107,7 @@ app.on('ready', () => {
     frame: !!(electronConfig.URL_LAUNCHER_FRAME),
     title: electronConfig.URL_LAUNCHER_TITLE,
     kiosk: !!(electronConfig.URL_LAUNCHER_KIOSK),
+    backgroundColor: electronConfig.URL_LAUNCHER_COLOR,
     webPreferences: {
       sandbox: false,
       nodeIntegration: !!(electronConfig.URL_LAUNCHER_NODE),
@@ -113,10 +116,23 @@ app.on('ready', () => {
     },
   });
 
+  loadingWindow = new BrowserWindow({
+    width: electronConfig.URL_LAUNCHER_WIDTH, 
+    height: electronConfig.URL_LAUNCHER_HEIGHT, 
+    transparent: true, 
+    frame: false, 
+    alwaysOnTop: true
+  });
+
+  loadingWindow.loadURL(`file://${__dirname}/data/splash.html`);
+  // the big red button, here we go
+  mainWindow.loadURL(electronConfig.URL_LAUNCHER_URL);
+
   mainWindow.webContents.on('did-finish-load', () => {
     setTimeout(() => {
+      loadingWindow.destroy();
       mainWindow.show();
-    }, 300);
+    }, 1000);
   });
 
   // if the env-var is set to true,
@@ -128,7 +144,4 @@ app.on('ready', () => {
   process.on('uncaughtException', (err) => {
     console.log(err);
   });
-
-  // the big red button, here we go
-  mainWindow.loadURL(electronConfig.URL_LAUNCHER_URL);
 });
