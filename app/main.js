@@ -60,8 +60,8 @@ if (electronConfig.ELECTRON_USER_DATA_DIR) {
 if (process.env.NODE_ENV === 'development') {
   console.log('Running in development mode');
   Object.assign(electronConfig, {
-    URL_LAUNCHER_HEIGHT: 600,
-    URL_LAUNCHER_WIDTH: 800,
+    URL_LAUNCHER_HEIGHT: 800,
+    URL_LAUNCHER_WIDTH: 480,
     URL_LAUNCHER_KIOSK: 0,
     URL_LAUNCHER_CONSOLE: 1,
     URL_LAUNCHER_FRAME: 1,
@@ -121,19 +121,23 @@ app.on('ready', () => {
     height: electronConfig.URL_LAUNCHER_HEIGHT, 
     transparent: true, 
     frame: false, 
-    alwaysOnTop: true
+    alwaysOnTop: true,
+    webPreferences: {
+      sandbox: false,
+      overlayScrollbars: false,
+    },
   });
 
   loadingWindow.loadURL(`file://${__dirname}/data/splash.html`);
   // the big red button, here we go
   mainWindow.loadURL(electronConfig.URL_LAUNCHER_URL);
 
-  mainWindow.webContents.on('did-finish-load', () => {
-    setTimeout(() => {
-      loadingWindow.destroy();
-      mainWindow.show();
-    }, 1000);
-  });
+  // mainWindow.webContents.on('did-finish-load', () => {
+  //   setTimeout(() => {
+  //     loadingWindow.destroy();
+  //     mainWindow.show();
+  //   }, 1000);
+  // });
 
   // if the env-var is set to true,
   // a portion of the screen will be dedicated to the chrome-dev-tools
