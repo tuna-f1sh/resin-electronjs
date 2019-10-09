@@ -28,6 +28,9 @@ RUN install_packages \
   libssh-4 \
   libexpat-dev 
 
+# install support for hyperpixel
+RUN git clone https://github.com/pimoroni/hyperpixel4 -b pi4
+
 # Move package.json to filesystem
 COPY ./app/package.json .
 
@@ -86,6 +89,9 @@ COPY ./app ./
 
 # Copy the modules from the build step
 COPY --from=build /usr/src/app/node_modules ./node_modules
+
+COPY --from=build ./usr/src/app/hyperpixel4/dist/hyperpixel4-init /usr/bin
+COPY --from=build ./usr/src/app/hyperpixel4/dist/hyperpixel4-rotate /usr/bin
 
 # Start app
 CMD ["bash", "/usr/src/app/start.sh"]

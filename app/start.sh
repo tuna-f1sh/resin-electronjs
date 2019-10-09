@@ -4,6 +4,11 @@
 # pages we need more.
 umount /dev/shm && mount -t tmpfs shm /dev/shm
 
+# load goodix driver for hyperpixel4
+if [ ! -f /usr/bin/hyperpixel4-init ]; then
+  modprobe i2c-dev && modprobe goodix && /usr/bin/hyperpixel4-init
+fi
+
 # using local electron module instead of the global electron lets you
 # easily control specific version dependency between your app and electron itself.
 # the syntax below starts an X istance with ONLY our electronJS fired up,
@@ -18,5 +23,5 @@ if [ ! -c /dev/fb1 ] && [ "$TFT" = "1" ]; then
   mknod /dev/fb1 c $(cat /sys/class/graphics/fb1/dev | tr ':' ' ') || true
   FRAMEBUFFER=/dev/fb1 startx /usr/src/app/node_modules/electron/dist/electron /usr/src/app --enable-logging
 else
-  DBUS_SYSTEM_BUS_ADDRESS=unix:path=/host/run/dbus/system_bus_socket startx /usr/src/app/node_modules/electron/dist/electron /usr/src/app --enable-logging
+  DBUS_SYSTEM_BUS_ADDRESS=unix:path=/host/run/dbus/system_bus_socket startx /usr/src/app/node_modules/electron/dist/electron /usr/src/app --enable-logging --no-sandbox
 fi
