@@ -5,9 +5,9 @@
 umount /dev/shm && mount -t tmpfs shm /dev/shm
 
 # load goodix driver for hyperpixel4
-if [ ! -f /usr/bin/hyperpixel4-init ]; then
+# if [ ! -f /usr/bin/hyperpixel4-init ]; then
   modprobe i2c-dev && modprobe goodix && /usr/bin/hyperpixel4-init
-fi
+# fi
 
 # using local electron module instead of the global electron lets you
 # easily control specific version dependency between your app and electron itself.
