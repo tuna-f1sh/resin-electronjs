@@ -132,12 +132,12 @@ app.on('ready', () => {
   // the big red button, here we go
   mainWindow.loadURL(electronConfig.URL_LAUNCHER_URL);
 
-  // mainWindow.webContents.on('did-finish-load', () => {
-  //   setTimeout(() => {
-  //     loadingWindow.destroy();
-  //     mainWindow.show();
-  //   }, 1000);
-  // });
+  mainWindow.webContents.on('did-finish-load', () => {
+    setTimeout(() => {
+      loadingWindow.destroy();
+      mainWindow.show();
+    }, 2000);
+  });
 
   // if the env-var is set to true,
   // a portion of the screen will be dedicated to the chrome-dev-tools
