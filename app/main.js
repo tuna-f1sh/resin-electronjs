@@ -129,14 +129,12 @@ app.on('ready', () => {
   });
 
   loadingWindow.loadURL(`file://${__dirname}/data/splash.html`);
-  // the big red button, here we go
-  mainWindow.loadURL(electronConfig.URL_LAUNCHER_URL);
 
   mainWindow.webContents.on('did-finish-load', () => {
     setTimeout(() => {
       loadingWindow.destroy();
       mainWindow.show();
-    }, 2000);
+    }, 500);
   });
 
   // if the env-var is set to true,
@@ -144,6 +142,9 @@ app.on('ready', () => {
   if (electronConfig.URL_LAUNCHER_CONSOLE) {
     mainWindow.webContents.openDevTools();
   }
+
+  // the big red button, here we go
+  mainWindow.loadURL(electronConfig.URL_LAUNCHER_URL);
 
   process.on('uncaughtException', (err) => {
     console.log(err);
