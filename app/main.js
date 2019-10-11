@@ -130,11 +130,16 @@ app.on('ready', () => {
 
   loadingWindow.loadURL(`file://${__dirname}/data/splash.html`);
 
+  loadingTimeout = setTimeout(() => {
+    loadingWindow.loadURL(`file://${__dirname}/data/timeout.html`)
+  }, 20000);
+
   mainWindow.webContents.on('did-finish-load', () => {
     setTimeout(() => {
+      clearTimeout(loadingTimeout);
       loadingWindow.destroy();
       mainWindow.show();
-    }, 500);
+    }, 2000);
   });
 
   // if the env-var is set to true,

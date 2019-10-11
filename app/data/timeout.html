@@ -1,0 +1,84 @@
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Loading</title>
+  </head>
+<style>
+body {
+  width: 480px;
+  height: 800px;
+  background-color: black;
+  text-align: center;
+  font-family: Roboto;
+  color: white;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  margin: 0px;
+  padding: 0px;
+}
+
+.container {
+  display: grid;
+  height: 100%;
+}
+.container > div {
+  margin: auto;
+}
+.header {
+  font-size: 2em;
+}
+.logo img {
+  padding-bottom: 10px;
+}
+.notice-header, .notice-text {
+  padding: 10px 10px;
+  font-size: 1.5em;
+  font-style: italic;
+  text-transform: uppercase;
+}
+.notice-text {
+  font-size: 1.3em;
+  text-transform: none;
+}
+.element {
+  height: 250px;
+  width: 250px;
+  margin: 0 auto;
+  background-color: red;
+  animation-name: stretch;
+  animation-duration: 0.5s;
+  animation-timing-function: ease-out;
+  animation-delay: 0;
+  animation-direction: alternate;
+  animation-iteration-count: infinite;
+  animation-fill-mode: none;
+  animation-play-state: running;
+}
+
+@keyframes stretch {
+  0% {
+    transform: scale(.1);
+    background-color: #440000;
+    border-radius: 100%;
+  }
+  100% {
+    transform: scale(.5);
+    background-color: red;
+    border-radius: 100%;
+  }
+}
+</style>
+  <body>
+    <div class='container'>
+      <!-- <div class='header'>ERROR: SBC CAN HMI</div> -->
+      <!-- <div class='logo'><img src='logo.png'/> </div> -->
+      <div class='notice'>
+        <div class='element'></div>
+        <div class='notice-header'>Error!</div>
+        <div class='notice-text'>Failed to connect to internal server</div>
+      </div>
+      <div class='footer'></div>
+    </div>
+  </body>
+</html>
