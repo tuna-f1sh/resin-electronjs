@@ -22,7 +22,8 @@
   "dependencies": {
     "electron": "~6.0.0",
     "electron-rebuild": "^1.7.2",
-    "lockfile": "^1.0.4"
+    "lockfile": "^1.0.4",
+    "wait-port": "^0.2.6"
   },
   "author": "Carlo Maria Curinga",
   "license": "Apache-2.0",

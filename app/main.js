@@ -1,5 +1,6 @@
 const electron = require('electron');
 const path = require('path');
+const waitPort = require('wait-port');
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
@@ -9,6 +10,12 @@ const {
   app,
   BrowserWindow,
 } = electron;
+
+const waitParams = {
+  port: process.env.URL_LAUNCHER_PORT || 3001,
+  timeout: 30000,
+  output: 'silent'
+};
 
 // simple parameters initialization
 const electronConfig = {
@@ -130,16 +137,11 @@ app.on('ready', () => {
 
   loadingWindow.loadURL(`file://${__dirname}/data/splash.html`);
 
-  loadingTimeout = setTimeout(() => {
-    loadingWindow.loadURL(`file://${__dirname}/data/timeout.html`)
-  }, 20000);
-
   mainWindow.webContents.on('did-finish-load', () => {
     setTimeout(() => {
-      clearTimeout(loadingTimeout);
       loadingWindow.destroy();
       mainWindow.show();
-    }, 2000);
+    }, 200);
   });
 
   // if the env-var is set to true,
@@ -149,7 +151,14 @@ app.on('ready', () => {
   }
 
   // the big red button, here we go
-  mainWindow.loadURL(electronConfig.URL_LAUNCHER_URL);
+  waitPort(waitParams)
+    .then((open) => {
+      if (open)   mainWindow.loadURL(electronConfig.URL_LAUNCHER_URL);
+      else loadingWindow.loadURL(`file://${__dirname}/data/timeout.html`)
+    })
+    .catch((err) => {
+      console.err(`An unknown error occured while waiting for the port: ${err}`);
+    });
 
   process.on('uncaughtException', (err) => {
     console.log(err);
