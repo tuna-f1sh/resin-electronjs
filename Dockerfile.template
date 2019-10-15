@@ -69,7 +69,6 @@ RUN install_packages \
   libssh-4 \
   fbset \
   libexpat1 \
-  python3 \
   dbus-x11
 
 ENV DBUS_SYSTEM_BUS_ADDRESS=unix:path=/host/run/dbus/system_bus_socket

@@ -74,6 +74,8 @@ RUN install_packages \
   libssh-4 \
   fbset \
   libexpat1 \
+  python-rpi.gpio \
+  python3-rpi.gpio \
   dbus-x11
 
 ENV DBUS_SYSTEM_BUS_ADDRESS=unix:path=/host/run/dbus/system_bus_socket
@@ -90,6 +92,7 @@ COPY ./app ./
 COPY --from=build /usr/src/app/node_modules ./node_modules
 
 COPY --from=build ./usr/src/app/hyperpixel4/dist/hyperpixel4-init /usr/bin
+COPY --from=build ./usr/src/app/hyperpixel4/dist/hyperpixel4-rotate /usr/bin
 
 # Start app
 CMD ["bash", "/usr/src/app/start.sh"]
