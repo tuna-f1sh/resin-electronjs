@@ -10,6 +10,8 @@ if [[ -z "${HYPERPIXEL4}" ]]; then
 else
   echo Configuring Hyperpixel 4 display
   modprobe i2c-dev && modprobe goodix && /usr/bin/hyperpixel4-init
+  # link software i2c from display to usual hardware 1 which is not available
+  ln -s /dev/i2c-3 /dev/i2c-1
 fi
 
 # using local electron module instead of the global electron lets you
