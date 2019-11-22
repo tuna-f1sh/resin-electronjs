@@ -16,6 +16,11 @@ else
   ln -s /dev/i2c-3 /dev/i2c-1
 fi
 
+# Default to UTC if no TIMEZONE env variable is set
+echo "Setting time zone to ${TIMEZONE=UTC}"
+rm -f /etc/localtime
+ln -s /usr/share/zoneinfo/${TIMEZONE} /etc/localtime
+
 # using local electron module instead of the global electron lets you
 # easily control specific version dependency between your app and electron itself.
 # the syntax below starts an X istance with ONLY our electronJS fired up,
