@@ -10,6 +10,8 @@ if [[ -z "${HYPERPIXEL4}" ]]; then
 else
   echo Configuring Hyperpixel 4 display
   modprobe i2c-dev && modprobe goodix && /usr/bin/hyperpixel4-init
+  # add RTC as device on i2c-3 bus
+  echo ds1307 0x68 > /sys/class/i2c-adapter/i2c-3/new_device
   # link software i2c from display to usual hardware 1 which is not available
   ln -s /dev/i2c-3 /dev/i2c-1
 fi
