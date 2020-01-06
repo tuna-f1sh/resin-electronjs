@@ -13,7 +13,7 @@ const {
 
 const waitParams = {
   port: process.env.URL_LAUNCHER_PORT || 3001,
-  timeout: 30000,
+  timeout: 90000,
   output: 'silent'
 };
 
